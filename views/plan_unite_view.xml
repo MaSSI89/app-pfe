@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- create the form view -->
+    <record id="plan_unite_view_form" model="ir.ui.view">
+        <field name="name">plan.unite.view.form</field>
+        <field name="model">plan.unite</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="direction_id" />
+                        <field name="directeur_id" />
+                        <field name="processus_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- create tree view  -->
+    <record id="plan_unite_view_tree" model="ir.ui.view">
+        <field name="name">plan.unite.view.tree</field>
+        <field name="model">plan.unite</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="direction_id" />
+                <field name="directeur_id" />
+                <field name="processus_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="plan_unite_action" model="ir.actions.act_window">
+        <field name="name">Unites</field>
+        <field name="res_model">plan.unite</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- menuitem -->
+    <menuitem id="plan_unite_menu" name="Unites" parent="plan_direction_subs_menu" action="plan_unite_action" />
+
+
+</odoo>

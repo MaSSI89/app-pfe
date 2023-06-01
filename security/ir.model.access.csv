@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+plan_employe,plan.employe,model_plan_employe,,1,1,1,1
+plan_direction,plan.direction,model_plan_direction,,1,1,1,1
+plan_processus,plan.processus,model_plan_processus,,1,1,1,1
+plan_unite,plan.unite,model_plan_unite,,1,1,1,1
+
+plan_constat_directeur,plan.constat,model_plan_constat,group_plan_directeur,1,0,0,1
+plan_constat_administrateur,plan.constat,model_plan_constat,group_plan_administrateur,1,1,1,1
+plan_action,plan.action,model_plan_action,,1,1,1,1
+plan_action_pilote,plan.action,model_plan_action,group_plan_pilote,1,1,1,1
+plan_affectation_pilote,plan.affectation.pilote,model_plan_affectation_pilote,,1,1,1,1
+plan_affectation_pilote_referent,plan.affectation.pilote,model_plan_affectation_pilote,group_plan_referent,1,1,1,1

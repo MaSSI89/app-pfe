@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="action_date_fin_previsionelle_email" model="mail.template">
+            <field name="name">Rappel date fin previsionelle d'une action</field>
+            <field name="model_id" ref="plan.model_plan_action" />
+            <field name="subject">Rappel date fin previsionelle d'une action</field>
+            <field name="email_from">${object.create_uid.email or user.email} </field>
+            <field name="email_to">${object.pilote_id.email}</field>
+            <field name="body_html" type="html" >
+                <h3>Date fin previsionelle action </h3>
+                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                        <tbody>     
+                            <tr>
+                                <td align="center" style="min-width: 590px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                        <tr><td valign="top" style="font-size: 20px;">
+                                            <div>
+                                                Bonjour,<br/><br/>
+                                                L'action ${object.action} est prevue d'etre termine le ${object.date_fin_previsionelle} <br/><br/>
+                                                cependant le taux d'avancement est ${object.taux_avancement} <br/><br/>
+                                                <br/>
+                                                <div style="margin: 16px 0px 16px 0px;">
+                                                    <a href="${object.get_action_url()}"
+                                                        style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:25px;">
+                                                        voire le constat
+                                                    </a>
+                                                </div>
+                                               <br/><br/>
+                                                Thanks,
+                                                % if user.signature:
+                                                    <br/>
+                                                    ${user.signature | safe}
+                                                % endif
+                                            </div>
+                                        </td></tr>
+                                        <tr><td style="text-align:center;">
+                                        <hr width="100%" style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                        </td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>         
+                </field>
+        </record>
+    
+    </data>
+    
+
+</odoo>

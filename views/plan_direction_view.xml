@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="plan_direction_view" model="ir.ui.view">
+        <field name="name">plan.direction.view.form</field>
+        <field name="model">plan.direction</field>
+        <field name="arch" type="xml">
+            <form string="Plan Direction">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="cree_le" />
+                    </group>
+                    <!-- add remaining attributes fields-->
+                    <group>
+                        <field name="directeur_id" />
+                        <field name="referent_id" />
+                        <!-- <field name="unites_ids" /> -->
+                        <field name="employes_ids" />
+                    </group>
+                    <group>
+                        <field name="unites_ids" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+            <!-- create tree view  -->
+    <record id="plan_direction_tree_view" model="ir.ui.view">
+        <field name="name">plan.direction.tree.view</field>
+        <field name="model">plan.direction</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="name"/>
+                <field name="cree_le" />
+                <field name="directeur_id" />
+                <field name="referent_id" />
+                <!-- <field name="unites_ids" /> -->
+                <field name="employes_ids" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="plan_direction_action" model="ir.actions.act_window">
+        <field name="name">Directions</field>
+        <field name="res_model">plan.direction</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    
+    <menuitem id="plan_root_menu" name="Plan d'amelioration" sequence="10" />
+    <menuitem id="plan_direction_subs_menu" name="Administration" parent="plan_root_menu" groups="group_plan_directeur" />
+    <menuitem id="plan_direction_menu" name="Directions" parent="plan_direction_subs_menu" action="plan_direction_action" groups="group_plan_directeur" />
+        
+
+</odoo>

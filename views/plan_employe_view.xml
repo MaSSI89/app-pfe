@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="employe_view_form" model="ir.ui.view">
+        <field name="name">plan.employe.view.form</field>
+        <field name="model">plan.employe</field>
+        <field name="arch" type="xml">
+            <form string="Plan Employe">
+                <sheet>
+                    <group>
+                        <field name="name" string="Nom" />
+                        <field name="login" />
+                        <field name="email" widget="email" />
+                    </group>
+                    <!-- add remaining attributes fields-->
+                    <group>
+                        <field name="post_occupe" />
+                        <field name="matricule_cnas" />
+                        <field name="direction_id" options="{'no_create':True}" />
+                    </group>                            
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- create tree view  -->
+    <record id="employe_tree_view" model="ir.ui.view">
+        <field name="name">plan.employe.view.tree</field>
+        <field name="model">plan.employe</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="user_id" />
+                <field name="name"/>
+                <field name="login" />
+                <field name="matricule_cnas" />
+                <field name="direction_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="plan_employe_action" model="ir.actions.act_window">
+        <field name="name">Employes</field>
+        <field name="res_model">plan.employe</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="plan_employe_menu" name="Employees" parent="plan_root_menu" action="plan_employe_action" groups="group_plan_directeur" />
+
+</odoo>

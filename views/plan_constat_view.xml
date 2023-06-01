@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- create form view -->
+    <record id="plan_constat_view_form" model="ir.ui.view">
+        <field name="name">plan.constat.view.form</field>
+        <field name="model">plan.constat</field>
+        <field name="arch" type="xml">
+            <form>
+            <header>
+                <button name="supprimer_constat" type="object" string="Supprimer ce constat" class="btn btn-danger" attrs="{'invisible': [('id','=', False)]}" />
+                <button name="annuler_constat" type="object" string="Annuler constat" class="btn btn-warning" attrs="{'invisible': [('id','=', False)]}" />
+                <field name="status" widget="statusbar" />
+            </header>
+                <sheet>
+                    <group>
+                        <field name="document"/>
+                        <field name="name"/>
+                        <field name="type_constat"/>
+                        <field name="origine" />
+                    </group>
+                    <group>
+                        <field name="direction_concerne_ids" options="{'no_create': True,'no_open':True}" />
+                        <field name="direction_pilote_ids" widget="many2many_tags" options="{'no_create': True,'no_open':True}" />
+                        <field name="activite_id"  options="{'no_create': True,'no_open':True}" />
+                        <field name="processus_id"  options="{'no_create': True,'no_open':True}" />
+                        <field name="genere_action"  />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- create tree view -->
+    <record id="plan_constat_view_tree" model="ir.ui.view">
+        <field name="name">plan.constat.view.tree</field>
+        <field name="model">plan.constat</field>
+        <field name="arch" type="xml">
+            <tree string="" limit="0" decoration-success="status == 'solde'" decoration-danger="status =='supprime'" decoration-warning="status == 'annule'" >
+                <field name="name"/>
+                <field name="type_constat"/>
+                <field name="origine" />
+                <field name="direction_concerne_ids" options="{'no_open': True}" />
+                <field name="direction_pilote_ids" options="{'no_open': True}" />
+                <field name="activite_id"  />
+                <field name="processus_id" />
+                <field name="genere_action" />
+                <field name="status" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- create window action -->
+    <record id="plan_constat_view_action" model="ir.actions.act_window">
+        <field name="name">Constats</field>
+        <field name="res_model">plan.constat</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- create menuitem -->
+    <menuitem id="plan_constat_menu" name="Constats" parent="plan_root_menu" action="plan_constat_view_action"  groups="group_plan_directeur"/>
+
+</odoo>

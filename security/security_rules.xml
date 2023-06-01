@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- create a record rule for action -->
+    <record id="plan_action_pilote_record_rule" model="ir.rule">
+        <field name="name">Pilote: Voire mes actions</field>
+        <field name="model_id" ref="plan.model_plan_action"/>
+        <field name="groups" eval="[(4, ref('group_plan_pilote'))]"/>
+        <field name="domain_force">[('pilote_id.user_id', '=', user.id)]</field>
+    </record>
+
+    <!-- create a record rule for action -->
+    <record id="plan_action_directeur_record_rule" model="ir.rule">
+        <field name="name">Directeur: Voire les actions de la direction</field>
+        <field name="model_id" ref="plan.model_plan_action"/>
+        <field name="groups" eval="[(4, ref('group_plan_referent'))]"/>
+        <field name="domain_force">[('direction_id', '=', user.employe_id.direction_id.id)]</field>
+    </record>
+
+    <!-- create a record rule for administrateur to see all actions -->
+    <record id="plan_action_administrateur_rule" model="ir.rule">
+        <field name="name">Administrateur: Voire toutes les actions</field>
+        <field name="model_id" ref="plan.model_plan_action"/>
+        <field name="groups" eval="[(4, ref('group_plan_administrateur'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    
+  
+    <!-- ******* CONSTAT RULES ************* -->
+    <!-- create record rule for constat -->
+    <record id="plan_constat_directeur_record_rule" model="ir.rule">
+        <field name="name">Directeur: Voire les constats de la direction</field>
+        <field name="model_id" ref="plan.model_plan_constat"/>
+        <field name="groups" eval="[(4, ref('group_plan_directeur'))]"/>
+        <field name="domain_force">[('direction_pilote_ids' ,'in', user.employe_id.direction_id.id)]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="False" />
+        <field name="perm_unlink" eval="True" />
+    </record>
+
+    <!-- create record rule for administrateur to see all constat -->
+    <record id="plan_constat_administrateur_record_rule" model="ir.rule">
+        <field name="name">Administrateur: Voire tous les constats</field>
+        <field name="model_id" ref="plan.model_plan_constat"/>
+        <field name="groups" eval="[(4, ref('group_plan_administrateur'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <!-- Affectation pilote record rules -->
+    <!-- record rule for referent and directeur -->
+    <record id="plan_affectation_pilote_referent_record_rule" model="ir.rule">
+        <field name="name">Referent: voire les affectations de la direction</field>
+        <field name="model_id" ref="plan.model_plan_affectation_pilote" />
+        <field name="groups" eval="[(4, ref('group_plan_referent'))]" />
+        <field name="domain_force">[('direction_pilote_id', '=', user.employe_id.direction_id.id)] </field>
+    </record>
+
+    <!-- record rule for administrateur to see all affectations -->
+    <record id="plan_affectation_pilote_administrateur" model="ir.rule">
+        <field name="name">Administrateur: VOire tous les affectations</field>
+        <field name="model_id" ref="plan.model_plan_affectation_pilote" />
+        <field name="groups" eval="[(4, ref('group_plan_administrateur'))]" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+</odoo>
