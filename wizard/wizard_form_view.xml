@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ir.ui.view" model="renseigner_taux_avancement_wizard_form_view">
+        <field name="name">renseigner.taux.avancement.wizard.form</field>
+        <field name="model">plan.renseigner.taux.avancement.wizard</field>
+        <field name="arch" type="xml" >
+            <group>
+                <field name="action_id" />
+                <field name="motif_rejet" />
+            </group>
+        </field>
+    </record>
+
+    <act_window_id="launch_session_wizard" name="Motif Rejet"
+        binding_model="plan.action" res_model="plan.renseigner.taux.avancement.wizard"
+        view_mode="form" target="new" />
+
+</odoo>

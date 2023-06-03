@@ -25,6 +25,8 @@
                         <field name="activite_id"  options="{'no_create': True,'no_open':True}" />
                         <field name="processus_id"  options="{'no_create': True,'no_open':True}" />
                         <field name="genere_action"  />
+                        <field name="affectation_pilote_ids" attrs="{'invisible': [('id','=', False)]}" options="{'no_create': True}" />
+                        <!-- <field name="action_ids" attrs="{'invisible': [('id','=', False)]}" options="{'no_create': True}" /> -->
                     </group>
                 </sheet>
             </form>

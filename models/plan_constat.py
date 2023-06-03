@@ -54,8 +54,8 @@ class Constat(models.Model):
     direction_pilote_ids = fields.Many2many('plan.direction',string='Direction pilote')
     activite_id = fields.Many2one('plan.unite', string='Unite')
     processus_id = fields.Many2one('plan.processus', string='Processus')
-    action_ids = fields.One2many('plan.action','constat_id', string='Action')
-    affectation_pilote_ids = fields.One2many('plan.affectation_pilote', 'constat_id', string='Affectation')
+    action_ids = fields.One2many('plan.action','constat_id', string='Actions')
+    affectation_pilote_ids = fields.One2many('plan.affectation_pilote', 'constat_id', string='Affectations')
 
 
     def supprimer_constat(self):
@@ -67,13 +67,29 @@ class Constat(models.Model):
         self.status = 'annule'
         # notify constat createur
         return
+    
+    def send_mail_notification(self):
+        template_id = self.env.ref('plan.constat_fort_sans_actions_mail')
+        print(template_id)
+        for rec in self:
+            print(rec)
+            template_id.send_mail(rec.id, force_send=True)
+            return True
+        return False
 
     @api.model
     def create(self, vals):
         record = super(Constat, self).create(vals)
         if not vals['genere_action'] and vals['type_constat'] == 'fort':
             #notify direction pilote directeur et referent
-            a=1
+            print('*******************')
+            print(vals['genere_action'])
+            print(not vals['genere_action'])
+            print(vals['direction_pilote_ids'][0][2])
+            print(record)
+            record.send_mail_notification()
+            return record
+
         
         for rec in vals['direction_pilote_ids'][0][2]:
             action = {
@@ -100,13 +116,8 @@ class Constat(models.Model):
     @api.onchange('direction_pilote_ids')
     def onchange_direction_pilote(self):
         if self.direction_pilote_ids:
-            print('*******************')
-            print(self.direction_pilote_ids)
             unites_ids = self.direction_pilote_ids.ids
-            print(unites_ids)
             unite_domain = [('direction_id','=', unites_ids[-1])]
-            print(unite_domain)
-            print('*******************')
             return {'domain': {'activite_id': unite_domain}}
         else:
             self.activite_id = False
@@ -124,3 +135,22 @@ class Constat(models.Model):
             return {'domain': {'processus_id': processus_domain}}
         else:
             self.processus_id = False
+
+    def get_constat_url(self):
+        # http://localhost:8069/web#id=12
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        constat_url = base_url + '/web#id=%'+ str(self.id) +'&action=134&model=plan.constat&view_type=form&cids=&menu_id=114'
+        return constat_url
+    
+    def get_concerned_people_emails(self):
+        dir_pilote_ids = self.direction_pilote_ids.ids
+        dir_pilote_records = self.env['plan.direction'].search([('id','in',dir_pilote_ids)])
+        personnes_concernes = ''
+        for dir_pilote in dir_pilote_records:
+            if isinstance(dir_pilote.directeur_id.email, str) and dir_pilote.directeur_id.email not in personnes_concernes:
+                personnes_concernes += dir_pilote.directeur_id.email + ','
+            if isinstance(dir_pilote.referent_id.email, str) and dir_pilote.referent_id.email not in personnes_concernes:
+                personnes_concernes += dir_pilote.referent_id.email + ','
+
+        personnes = personnes_concernes.rstrip(",")
+        return personnes

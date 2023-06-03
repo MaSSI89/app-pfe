@@ -9,12 +9,14 @@
             <form>
                 <header>
                     <!-- <button string="Abandonner action" name="abandonner_action" type="object" class="btn btn-warning" attrs="{'invisible': [('action','=', False)]}" /> -->
-                    <button string="Redefinir action" name="redefinir_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-primary" attrs="{'invisible': [('id','=', 0)]}" />
-                    <button string="Valider action" name="valider_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-info" attrs="{'invisible': [('id','=', 0)]}" />
-                    <button string="Approuver action" name="approuver_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-danger" attrs="{'invisible': [('id','=', 0)]}" />
-                    <button string="Desapprouver action" name="desapprouver_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-success" attrs="{'invisible': [('id','=', 0)]}" />
-                    <field name="status" widget="statusbar"  />
+                    <!-- <button string="Resnseigner taux d'avancememt" action="renseigner_taux_avancement" type="object" class="btn btn-dark" /> -->
+                    <button string="Redefinir action" confirm="Veuillez vous demander la redefintion de cette action ?" name="redefinir_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-primary" attrs="{'invisible': [('id','=', 0)]}" />
+                    <button string="Valider action" confirm="Veuillez vous valider cette action ?" name="valider_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-info" attrs="{'invisible': [('id','=', 0)]}" />
+                    <button string="Approuver action" confirm="Veuillez vous approuver cette action ?" name="approuver_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-success" attrs="{'invisible': [('id','=', 0)]}" />
+                    <button string="Desapprouver action" confirm="Veuillez vous desapprouver cette action ?" name="desapprouver_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-danger" attrs="{'invisible': [('id','=', 0)]}" />
+                    
                 </header>
+                <field name="status" widget="statusbar"  />
                 <sheet>
                     <group>
                         <field name="constat_id" readonly="1" options="{'no_open': True}" />
@@ -25,13 +27,14 @@
                         <field name="action" />
                         <field name="date_creation" readonly="1" />
                         <field name="date_fin_previsionelle" />
+                        <field name="taux_avancement" />
                     </group>
                     <group>
                         <field name="type_action" />
                         <field name="risque" />
                         <field name="cause" />
                         <field name="opportunite" />
-                        <!-- <field name="motif_rejet" /> -->
+                        <field name="motif_rejet" attrs="{'invisible': [('motif_rejet','=', False)]}" />
                     </group>
                 </sheet>
                 <div class="oe_chatter">

@@ -39,6 +39,11 @@
         'data/pilote_affecte_mail.xml',
         'data/action_date_fin_notification.xml',
         'data/send_date_fin_action_mail.xml',
+        'data/constat_fort_pas_actions_mail.xml',
+        'data/redefinir_action_mail.xml',
+        'data/valider_action_mail.xml',
+        'data/redefinir_action_mail.xml',
+        # 'wizard/wizard_form_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

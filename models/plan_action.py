@@ -6,46 +6,61 @@ class Action(models.Model):
     _description = 'Action'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    action = fields.Text(string='Action')
-    date_creation = fields.Date(string='Date de création', default=fields.Date.today)
-    date_fin_previsionelle = fields.Date(string='Date de fin prévisionelle')
-    risque = fields.Text(string='Risque')
+    action = fields.Text(string='Action',tracking=True)
+    date_creation = fields.Date(string='Date de création', default=fields.Date.today, tracking=True)
+    date_fin_previsionelle = fields.Date(string='Date de fin prévisionelle', tracking=True)
+    risque = fields.Text(string='Risque',tracking=True)
     cause = fields.Text(string='Cause')
     opportunite = fields.Text(string='Opportunité')
-    taux_avancement = fields.Integer(string='Taux d\'avancement', default=0)
+    taux_avancement = fields.Integer(string='Taux d\'avancement', default=0,tracking=True)
     motif_rejet = fields.Text(string='Motif de rejet')
     statut_approbation = fields.Selection([('pasEncore', 'Pas Encore'),
                                             ('approuve', 'Approuve'),
                                             ('Disapprouve', 'Disapprouve')
-                                            ],default="pasEncore")
+                                            ],default="pasEncore",tracking=True)
     type_risque = fields.Selection([('qualite','Qualite'),
-                                    ('finance', 'Finance')])
+                                    ('finance', 'Finance')],tracking=True)
     type_action = fields.Selection([
                                     ('corrective','Action Corrective'),
                                     ('preventive','Action Preventive'),
                                     ('amelioration','Action Amelioration'),
                                     ('non_retenue', 'Non Retenue')
                                     ],string="Type Action")
-    status = fields.Selection([('nonentamne','Non entamne'),
-                            ('endefinition',"Definition de l'action"),
-                            ('enattentevalidation','En attente de validation'),
-                            ('encours','Encours'),
-                            ('enattenteaproba',"En attente d'approbation"),
-                            ('approuve','Approuvée'),
-                            ('realise','Realise'),
+    status = fields.Selection([
+                            ('solde','Solde'),
                             ('abandonner','Abandonnée'),
-                            ('solde','Solde')],default='nonentamne',string="Statut")
+                            ('realise','Realise'),
+                            ('approuve','Approuvée'),
+                            ('enattenteaproba',"En attente d'approbation"),
+                            ('encours','Encours'),
+                            ('enattentevalidation','En attente de validation'),
+                            ('endefinition',"Definition de l'action"),
+                            ('nonentamne','Non entamne'),
+                            ],default='nonentamne',string="Statut",tracking=True)
     pilote_id = fields.Many2one('plan.employe', string='Pilote')
     constat_id = fields.Many2one('plan.constat', string='Constat')
     direction_id = fields.Many2one('plan.direction', string='Direction')
 
+
+    def send_mail_notification(self, template):
+        template_id = self.env.ref(template)
+        for rec in self:
+            template_id.send_mail(rec.id, force_send=True)
+            
+            return True
+        return False
+
     def redefinir_action(self):
+        template = 'plan.redefinir_action_mail'
+        self.send_mail_notification(template)
         #notify pilote 
         return
     
     def valider_action(self):
         #notify pilote
         self.status = 'encours'
+        template = 'plan.valider_action_mail'
+        self.send_mail_notification(template)
         return
     
     def approuver_action(self):
@@ -75,16 +90,7 @@ class Action(models.Model):
             values['status'] = 'enattentevalidation'
         record = super().write(values)
         return record
-    
-    def send_mail_notification(self, template):
-        template_id = self.env.ref(template)
-        for rec in self:
-            template_id.send_mail(rec.id, force_send=True)
-            
-            return True
-        return False
-
-    
+        
     def get_action_url(self):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         # http://localhost:8069/web#id=8&action=135&model=plan.action&view_type=form&cids=1&menu_id=114
@@ -100,3 +106,6 @@ class Action(models.Model):
         for action in actions:
 
             action.send_mail_notification(template)
+
+    def renseigner_taux_avancement(self):
+        return True
