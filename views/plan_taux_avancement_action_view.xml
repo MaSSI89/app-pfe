@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- define form view for plan_taux_avancement model -->
+    <record id="plan_taux_avancement_action_form_view" model="ir.ui.view">
+        <field name="name">plan.taux.avancement.action.view.form</field>
+        <field name="model">plan.taux.avancement.action</field>
+        <field name="arch" type="xml">
+            <form string="Taux d'avancement">
+                <sheet>
+                    <!-- add remaining attributes fields-->
+                    <group>
+                        <field name="action_id" readonly="1"  />
+                        <field name="taux_avancement" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+            <!-- create tree view  -->
+    <record id="plan_taux_avancement_action_tree_view" model="ir.ui.view">
+        <field name="name">plan.taux.avancement.action.tree.view</field>
+        <field name="model">plan.taux.avancement.action</field>
+        <field name="arch" type="xml">
+            <tree>
+
+                <field name="action_id" />
+                <field name="taux_avancement" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="plan_taux_avancement_action_action" model="ir.actions.act_window">
+        <field name="name">Taux d'avancement</field>
+        <field name="res_model">plan.taux.avancement.action</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="plan_taux_avancement_action_menu" name="Taux d'avancement" parent="plan_root_menu" action="plan_taux_avancement_action_action"/>
+
+</odoo>

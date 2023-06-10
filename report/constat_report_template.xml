@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="constat_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-set="has_header" t-value="True"/>
+                    <div class="page">
+                        <style>
+                            body{
+                                position:relative;
+                            }
+                            .company{
+                                top:0;
+                                left:50px;
+                                
+                            }
+                            .company div{
+                                margin:20px 0;
+                            }
+                            header{
+                                position: absolute;
+                                top : 320px;
+                                left:350px;
+                            }
+                            table{
+                                position:absolute;
+                                top:450px;
+                                border-collapse: collapse;
+                                left:30px;
+                            }
+                            table,td,tr,th{
+                                border : 2px solid black;
+                            }
+                            td{
+                                padding : 5px 10px;
+                            }
+                            .date{
+                                position:absolute;
+                                right:20px;
+                                
+                            }
+                        </style>
+                        <div class="company">
+                            
+                            
+                            <h2>
+                            <div>
+                                Metro EL-DJAZAIR
+                            </div>
+                            <div>
+                            Direction Management  
+                            </div>
+                             
+                            </h2> 
+                            <span class="date">Le <t t-esc="datetime.datetime.now().strftime('%d-%m-%Y ')" /></span>
+                            
+                        </div>
+                        <header >
+                            <h1>Rapport sur les constats</h1>
+                            
+                        </header>
+                        <table border="1" class="table table-bordered" >
+                        
+                            <tr>
+                                
+                                <th scope="col">Nom</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Direction concernee</th>
+                                <th scope="col">Directions pilote</th>
+                                <th scope="col">Unite</th>
+                                <th scope="col">Processus</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                            <t t-foreach="docs" t-as="o">
+                                <tr>
+                                    <!-- <td>
+                                        <span t-field="o.code" />
+                                    </td> -->
+                                    <td>
+                                        <span t-field="o.name" />
+                                    </td>
+                                    <td>                                        <span t-field="o.type_constat" />
+                                    </td>
+                                    <td>
+                                        <span t-field="o.direction_concerne_ids" />
+                                    </td>
+                                    <td>
+                                        <span t-field="o.direction_pilote_ids" />
+                                    </td>
+                                    <td>
+                                        <span t-field="o.activite_id" />
+                                    </td>
+                                    <td>
+                                        <span t-field="o.processus_id" />
+                                    </td>
+                                    <td>
+                                        <span t-field="o.status" />
+                                    </td>
+                                    
+                                </tr>
+                            </t>
+                        </table>
+                    </div>
+                
+            </t>
+        </t>
+    </template>
+</odoo>

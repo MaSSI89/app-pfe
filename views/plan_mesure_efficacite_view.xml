@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Create form view for plan_mesure efficacite -->
+    <!-- create form view -->
+    <record id="view_plan_mesure_efficacite_form" model="ir.ui.view">
+        <field name="name">plan.mesure.efficacite.form</field>
+        <field name="model">plan.mesure.efficacite</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="action_id" />
+                        <field name="mesure_efficacite" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- create tree view for plan.mesure.efficaicite -->
+    <record id="view_plan_mesure_efficacite_tree" model="ir.ui.view">
+        <field name="name">plan.mesure.efficacite.tree</field>
+        <field name="model">plan.mesure.efficacite</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="action_id" />
+                <field name="mesure_efficacite" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- create search view for plan.mesure.efficacite -->  
+    <record id="view_plan_mesure_efficacite_search" model="ir.ui.view">
+        <field name="name">plan.mesure.efficacite.search</field>
+        <field name="model">plan.mesure.efficacite</field>
+        <field name="arch" type="xml">
+            <search >
+                <field name="action_id" />
+                <field name="mesure_efficacite" />
+            </search>
+        </field>
+    </record>
+
+    <!-- create action for plan.mesure.efficacite -->
+    <record id="action_plan_mesure_efficacite" model="ir.actions.act_window">
+        <field name="name">Plan de mesure d'efficacité</field>
+        <field name="res_model">plan.mesure.efficacite</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- create menuitem for plan.mesure.efficacite -->
+    <menuitem id="menu_plan_mesure_efficacite" name="Mesure d'efficacité" parent="plan_root_menu" action="action_plan_mesure_efficacite"/>
+
+</odoo>

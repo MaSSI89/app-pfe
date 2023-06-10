@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_constat_report" model="ir.actions.report">
+        <field name="name">Exporter en pdf</field>
+        <field name="model">plan.constat</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">plan.constat_report_template</field>
+        <field name="report_file">plan.constat_report_template</field>
+        <field name="binding_model_id" ref="model_plan_constat" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_constat_report_excel" model="ir.actions.report">
+        <field name="name">Exporter en excel</field>
+        <field name="model">plan.constat</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">plan.constat_report_template_excel</field>
+        <field name="report_file">plan.constat_report_template_excel</field>
+        <field name="binding_model_id" ref="model_plan_constat" />
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

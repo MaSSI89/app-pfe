@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','mail','contacts'],
+    'depends': ['base','mail','contacts','report_xlsx'],
 
     # always loaded
     'data': [
@@ -35,6 +35,9 @@
         'views/plan_constat_view.xml',
         'views/plan_action_view.xml',
         'views/plan_affectation_pilote_view.xml',
+        'views/plan_rejet_action_view.xml',
+        'views/plan_taux_avancement_action_view.xml',
+        'views/plan_mesure_efficacite_view.xml',
         'data/affectation_pilote_mail.xml',
         'data/pilote_affecte_mail.xml',
         'data/action_date_fin_notification.xml',
@@ -42,7 +45,13 @@
         'data/constat_fort_pas_actions_mail.xml',
         'data/redefinir_action_mail.xml',
         'data/valider_action_mail.xml',
-        'data/redefinir_action_mail.xml',
+        'data/demande_approbation_action_mail.xml',
+        'data/action_approuve_mail.xml',
+        'data/action_desapprouve_mail.xml',
+        'data/action_abandonner_mail.xml',
+        'data/action_definie_mail.xml',
+        'report/constat_report.xml',
+        'report/constat_report_template.xml',
         # 'wizard/wizard_form_view.xml',
     ],
     # only loaded in demonstration mode

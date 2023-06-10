@@ -3,14 +3,14 @@
 
     <data>
     
-        <record id="pilote_affecte_email" model="mail.template">
-            <field name="name">Constat affecte</field>
+        <record id="action_desapprouver_mail" model="mail.template">
+            <field name="name">Action desapprouve</field>
             <field name="model_id" ref="plan.model_plan_action" />
-            <field name="subject">Constat affecte </field>
+            <field name="subject">Despprobation d'une action</field>
             <field name="email_from">${object.create_uid.email or user.email} </field>
-            <field name="email_to">${object.pilote_id.email}</field>
+            <field name="email_to">${object.pilote_id.email},${object.direction_id.directeur_id.email},${object.direction_id.referent_id.email}</field>
             <field name="body_html" type="html" >
-                <h3>Un nouveau constat affecte pour vous </h3>
+                <h3>Desapprobation d'une action  </h3>
                     <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
                         <tbody>     
                             <tr>
@@ -19,7 +19,10 @@
                                         <tr><td valign="top" style="font-size: 20px;">
                                             <div>
                                                 Bonjour,<br/><br/>
-                                                Un nouveau constat a été attribué à vous, vous devez définire une action pour résoudre le constat. Cliquez sur le bouton ci-dessus pour procéder à l'étape suivante.<br/><br/>
+                                                L'action ${object.action} a etait desapprouve par ${object.write_uid.name} <br/><br/>
+                                                 <br/><br/>
+                                                
+                                                <br/><br/>
                                                 <br/>
                                                 <div style="margin: 16px 0px 16px 0px;">
                                                     <a href="${object.get_action_url()}"
@@ -43,7 +46,7 @@
                             </tr>
                         </tbody>
                     </table>         
-            </field>
+                </field>
         </record>
     
     </data>

@@ -13,7 +13,7 @@ class Action(models.Model):
     cause = fields.Text(string='Cause')
     opportunite = fields.Text(string='Opportunité')
     taux_avancement = fields.Integer(string='Taux d\'avancement', default=0,tracking=True)
-    motif_rejet = fields.Text(string='Motif de rejet')
+    motif_rejet = fields.Text(string='Motif de rejet', tracking=True)
     statut_approbation = fields.Selection([('pasEncore', 'Pas Encore'),
                                             ('approuve', 'Approuve'),
                                             ('Disapprouve', 'Disapprouve')
@@ -26,18 +26,17 @@ class Action(models.Model):
                                     ('amelioration','Action Amelioration'),
                                     ('non_retenue', 'Non Retenue')
                                     ],string="Type Action")
-    status = fields.Selection([
-                            ('solde','Solde'),
-                            ('abandonner','Abandonnée'),
-                            ('realise','Realise'),
-                            ('approuve','Approuvée'),
-                            ('enattenteaproba',"En attente d'approbation"),
-                            ('encours','Encours'),
-                            ('enattentevalidation','En attente de validation'),
+    status = fields.Selection([('nonentamne','Non entamne'),
                             ('endefinition',"Definition de l'action"),
-                            ('nonentamne','Non entamne'),
+                            ('enattentevalidation','En attente de validation'),
+                            ('encours','Encours'),
+                            ('enattenteaproba',"En attente d'approbation"),
+                            ('approuve','Approuve'),
+                            ('realise','Realise'),
+                            ('solde','Solde'),
+                            ('abandonner','Abandonner')
                             ],default='nonentamne',string="Statut",tracking=True)
-    pilote_id = fields.Many2one('plan.employe', string='Pilote')
+    pilote_id = fields.Many2one('plan.employe', string='Pilote',tracking=True)
     constat_id = fields.Many2one('plan.constat', string='Constat')
     direction_id = fields.Many2one('plan.direction', string='Direction')
 
@@ -51,44 +50,76 @@ class Action(models.Model):
         return False
 
     def redefinir_action(self):
-        template = 'plan.redefinir_action_mail'
-        self.send_mail_notification(template)
+        
+        # self.send_mail_notification(template)
         #notify pilote 
-        return
+        return {
+            'name': 'Redefinir Action',
+            'type': 'ir.actions.act_window',
+            'res_model': 'plan.rejet.action',
+            'view_mode': 'form',
+            'view_id': self.env.ref('plan.plan_rejet_action_form_view').id,
+            'target': 'current',
+            'context': {
+                'default_action_id': self.id,
+            }
+
+
+        }
     
     def valider_action(self):
         #notify pilote
-        self.status = 'encours'
+        print('***********EXECUTING VALIDER************')
+        print('++++++++++++++++++++++',self)
+        
+        self.motif_rejet = False
         template = 'plan.valider_action_mail'
+        print(template)
         self.send_mail_notification(template)
-        return
+        self.status = 'encours'
+        return 
     
     def approuver_action(self):
         if self.type_action == 'corrective':
             self.status = 'realise'
+            self.constat_id.status = 'traite'
+            template = 'plan.action_corrective_traite_mail'
+            self.send_mail_notification(template)
+            return
+        
             #notify direction pilote: directeur, refrerent, pilote
-        else:
-            self.status = 'solde'
-            #notify direction pilote: directeur, refrerent, pilote
-            #check if all actions are solde
-            all_actions_solded = True
-            if all_actions_solded:
-                self.constat_id.status = 'solde'
-                #notify direction pilote: Administrateur, createur constat, referent , pilote
-
-        return
+        template = 'plan.action_approuver_mail'
+        self.send_mail_notification(template)
+        self.status = 'solde'
+        #notify direction pilote: directeur, refrerent, pilote
+        #check if all actions are solde
+        all_actions_solded = self.constat_id.check_if_all_actions_solded()
+        if all_actions_solded:
+            print('***********ALL ACTIONS SOLDED************')
+            self.constat_id.status = 'solde'
+            print(self.constat_id.status)
+            return True
+        return False
     
     def desapprouver_action(self):
+        self.taux_avancement = self.taux_avancement - 10
+        template = 'plan.action_desapprouver_mail'
+        self.send_mail_notification(template)
         return
     
     def abandonner_action(self):
         self.status = 'abandonner'
+        template = 'plan.action_abandonner_mail'
+        self.send_mail_notification(template)
         return
 
     def write(self, values):
         if 'status' not in values:
             values['status'] = 'enattentevalidation'
         record = super().write(values)
+        if record:
+            template = 'plan.action_definie_mail'
+            self.send_mail_notification(template)
         return record
         
     def get_action_url(self):
@@ -108,4 +139,38 @@ class Action(models.Model):
             action.send_mail_notification(template)
 
     def renseigner_taux_avancement(self):
-        return True
+        return {
+        'name': 'Renseigner Taux Avancement',
+        'type': 'ir.actions.act_window',
+        'res_model': 'plan.taux.avancement.action',
+        'view_mode': 'form',
+        'view_id': self.env.ref('plan.plan_taux_avancement_action_form_view').id,
+        'target': 'current',
+        'context': {
+            'default_action_id': self.id,
+        }
+        }
+    
+    def mesure_efficacite(self):
+        return {
+            'name': 'Mesure Efficacite',
+            'type': 'ir.actions.act_window',
+            'res_model': 'plan.mesure.efficacite',
+            'view_mode': 'form',
+            'view_id': self.env.ref('plan.plan_mesure_efficacite_form_view').id,
+            'target': 'current',
+            'context': {
+                'default_action_id': self.id,
+                }
+            }
+    
+    
+    def name_get(self):
+        res = []
+        for record in self:
+            res.append((record.id, record.action))
+        return res
+    
+    def get_createur_constat(self):
+        directeur_email = self.sudo().constat_id.create_uid.email
+        return str(directeur_email)

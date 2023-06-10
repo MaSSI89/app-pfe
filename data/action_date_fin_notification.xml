@@ -19,17 +19,17 @@
                                         <tr><td valign="top" style="font-size: 20px;">
                                             <div>
                                                 Bonjour,<br/><br/>
-                                                L'action ${object.action} est prevue d'etre termine le ${object.date_fin_previsionelle} <br/><br/>
+                                                L'action ${object.action} est prévue d'être terminée le ${object.date_fin_previsionelle} <br/><br/>
                                                 cependant le taux d'avancement est ${object.taux_avancement} <br/><br/>
                                                 <br/>
                                                 <div style="margin: 16px 0px 16px 0px;">
                                                     <a href="${object.get_action_url()}"
                                                         style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:25px;">
-                                                        voire le constat
+                                                        voir le constat
                                                     </a>
                                                 </div>
                                                <br/><br/>
-                                                Thanks,
+                                                Merci,
                                                 % if user.signature:
                                                     <br/>
                                                     ${user.signature | safe}

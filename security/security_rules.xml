@@ -9,11 +9,18 @@
         <field name="domain_force">[('pilote_id.user_id', '=', user.id)]</field>
     </record>
 
+    <record id="plan_action_referent_record_rule" model="ir.rule">
+        <field name="name">Referent: Voire mes actions</field>
+        <field name="model_id" ref="plan.model_plan_action"/>
+        <field name="groups" eval="[(4, ref('group_plan_referent'))]"/>
+        <field name="domain_force">[('direction_id', '=', user.employe_id.direction_id.id)]</field>
+    </record>
+
     <!-- create a record rule for action -->
     <record id="plan_action_directeur_record_rule" model="ir.rule">
         <field name="name">Directeur: Voire les actions de la direction</field>
         <field name="model_id" ref="plan.model_plan_action"/>
-        <field name="groups" eval="[(4, ref('group_plan_referent'))]"/>
+        <field name="groups" eval="[(4, ref('group_plan_directeur'))]"/>
         <field name="domain_force">[('direction_id', '=', user.employe_id.direction_id.id)]</field>
     </record>
 

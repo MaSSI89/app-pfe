@@ -60,6 +60,8 @@ class Constat(models.Model):
 
     def supprimer_constat(self):
         self.status = 'supprime'
+        for rec in self.action_ids:
+            rec.status = 'abandonner'
         # notify constat createur
         return
     
@@ -109,10 +111,6 @@ class Constat(models.Model):
         # notify direction pilote directeur referent providing affectation pilote link
         return record
 
-
-
-
-
     @api.onchange('direction_pilote_ids')
     def onchange_direction_pilote(self):
         if self.direction_pilote_ids:
@@ -154,3 +152,16 @@ class Constat(models.Model):
 
         personnes = personnes_concernes.rstrip(",")
         return personnes
+    
+    def check_if_all_actions_solded(self):
+        print(self.action_ids)
+        print(self.action_ids.ids)
+
+        for action in self.action_ids:
+            print(action)
+            print(action.status)
+            if action.status != 'solde' or action.status == 'abandonner':
+                print('**FALSE***')
+                return False
+        print('**TRUE***')
+        return True

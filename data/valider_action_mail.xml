@@ -19,18 +19,18 @@
                                         <tr><td valign="top" style="font-size: 20px;">
                                             <div>
                                                 Bonjour,<br/><br/>
-                                                L'action ${object.action} a ete valide, vous pouvez commencez l'execution de l'action et renseigner le taux d'avancement <br/><br/>
+                                                L'action ${object.action} a été validée. Vous pouvez commencer l'exécution de l'action et renseigner le taux d'avancement.<br/><br/>
                                                 
                                                 <br/><br/>
                                                 <br/>
                                                 <div style="margin: 16px 0px 16px 0px;">
                                                     <a href="${object.get_action_url()}"
                                                         style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:25px;">
-                                                        voire l'action
+                                                        voir l'action
                                                     </a>
                                                 </div>
                                                <br/><br/>
-                                                Thanks,
+                                                Merci,
                                                 % if user.signature:
                                                     <br/>
                                                     ${user.signature | safe}

@@ -6,7 +6,15 @@ plan_unite,plan.unite,model_plan_unite,,1,1,1,1
 
 plan_constat_directeur,plan.constat,model_plan_constat,group_plan_directeur,1,0,0,1
 plan_constat_administrateur,plan.constat,model_plan_constat,group_plan_administrateur,1,1,1,1
+plan_constat_pilote,plan.constat,model_plan_constat,group_plan_pilote,1,1,0,0
+
 plan_action,plan.action,model_plan_action,,1,1,1,1
 plan_action_pilote,plan.action,model_plan_action,group_plan_pilote,1,1,1,1
+
+
 plan_affectation_pilote,plan.affectation.pilote,model_plan_affectation_pilote,,1,1,1,1
 plan_affectation_pilote_referent,plan.affectation.pilote,model_plan_affectation_pilote,group_plan_referent,1,1,1,1
+plan_rejet_action,plan.rejet.action,model_plan_rejet_action,,1,1,1,1
+plan_taux_avancement_action,plan.taux.avancement.action,model_plan_taux_avancement_action,,1,1,1,1
+
+plan_mesure_efficaicite,plan.mesure.efficacite,model_plan_mesure_efficacite,,1,1,1,1

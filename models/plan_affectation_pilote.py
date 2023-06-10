@@ -14,8 +14,8 @@ class AffectationPilote(models.Model):
     constat_id = fields.Many2one('plan.constat', string='Constat')
     action_id = fields.Many2one('plan.action', string='Action')
 
-    def ajouter_action(self):
-        return 
+    # def ajouter_action(self):
+    #     return 
     
     def send_mail_notification(self):
         template_id = self.env.ref('plan.affectation_pilote_mail')
@@ -44,6 +44,7 @@ class AffectationPilote(models.Model):
         # print(action_concerne)
         action_concerne = self.action_id
         print(action_concerne)
+        action_concerne.status = 'endefinition'
         action_concerne.send_mail_notification(template)
         return record
         # notify pilote

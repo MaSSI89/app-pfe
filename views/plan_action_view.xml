@@ -8,15 +8,23 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <!-- <button string="Abandonner action" name="abandonner_action" type="object" class="btn btn-warning" attrs="{'invisible': [('action','=', False)]}" /> -->
+                    <button string="Abandonner action" name="abandonner_action" type="object" class="btn btn-warning"
+                        attrs="{'invisible': [('status','=','abandonner')]}"  />
                     <!-- <button string="Resnseigner taux d'avancememt" action="renseigner_taux_avancement" type="object" class="btn btn-dark" /> -->
-                    <button string="Redefinir action" confirm="Veuillez vous demander la redefintion de cette action ?" name="redefinir_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-primary" attrs="{'invisible': [('id','=', 0)]}" />
-                    <button string="Valider action" confirm="Veuillez vous valider cette action ?" name="valider_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-info" attrs="{'invisible': [('id','=', 0)]}" />
-                    <button string="Approuver action" confirm="Veuillez vous approuver cette action ?" name="approuver_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-success" attrs="{'invisible': [('id','=', 0)]}" />
-                    <button string="Desapprouver action" confirm="Veuillez vous desapprouver cette action ?" name="desapprouver_action" type="object" groups='plan.group_plan_administrateur' class="btn btn-danger" attrs="{'invisible': [('id','=', 0)]}" />
+                    <button string="Renseigner taux avancement" name="renseigner_taux_avancement" type="object" class="btn btn-dark" 
+                        attrs="{'invisible': [('status','=','abandonner')]}"  />
+                    <button string="Redefinir" confirm="Veuillez vous demander la redefintion de cette action ?" name="redefinir_action" type="object" groups='plan.group_plan_administrateur' 
+                        class="btn btn-primary" attrs="{'invisible': [('status','!=','enattentevalidation')]}" />
+                    <button string="Valider" confirm="Veuillez vous valider cette action ?" name="valider_action" type="object" groups='plan.group_plan_administrateur' 
+                        class="btn btn-info" attrs="{'invisible': [('status','!=','enattentevalidation')]}" />
+                    <button string="Approuver" confirm="Veuillez vous approuver cette action ?" name="approuver_action" type="object" groups='plan.group_plan_administrateur'
+                         class="btn btn-success" attrs="{'invisible': [('status','!=','enattenteaproba')]}"  />
+                    <button string="Desapprouver" confirm="Veuillez vous desapprouver cette action ?" name="desapprouver_action" type="object" groups='plan.group_plan_administrateur'
+                         class="btn btn-danger" attrs="{'invisible': [('status','!=','enattenteaproba')]}" />
+                    <field name="status" widget="statusbar"  />
+                    <button string="Mesurer Efficacite" name="mesure_efficacite" type="object" class="btn btn-primary" attrs="{'invisible': [('status', '!=','realise')]}" />
                     
                 </header>
-                <field name="status" widget="statusbar"  />
                 <sheet>
                     <group>
                         <field name="constat_id" readonly="1" options="{'no_open': True}" />
@@ -27,14 +35,14 @@
                         <field name="action" />
                         <field name="date_creation" readonly="1" />
                         <field name="date_fin_previsionelle" />
-                        <field name="taux_avancement" />
+                        <field name="taux_avancement" readonly="1" widget="progressbar" />
                     </group>
                     <group>
                         <field name="type_action" />
                         <field name="risque" />
                         <field name="cause" />
                         <field name="opportunite" />
-                        <field name="motif_rejet" attrs="{'invisible': [('motif_rejet','=', False)]}" />
+                        <field name="motif_rejet" attrs="{'invisible': [('motif_rejet','=', False)]}" readonly="1"  />
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -52,7 +60,6 @@
         <field name="model">plan.action</field>
         <field name="arch" type="xml">
             <tree string="" limit="0" decoration-success="status == 'solde'" decoration-danger="status =='abandonner'" >
-                <field name="id" />
                 <field name="constat_id" />
                 <field name="direction_id" />
                 <field name="pilote_id" />
@@ -61,11 +68,28 @@
                 <field name="date_fin_previsionelle" />
                 <field name="type_action" />
                 <field name="risque" />
-                <field name="cause" />
-                <field name="opportunite" />
-                <field name="motif_rejet" />
                 <field name="status" />
+                <field name="taux_avancement" widget="progressbar" />
             </tree>
+        </field>
+    </record>
+
+    <!-- define a search view -->
+    <!-- the fields which can be searched are : direction_pilote_id, pilote_id, status -->
+    <record id="plan_action_view_search" model="ir.ui.view">
+        <field name="name">plan.action.view.search</field>
+        <field name="model">plan.action</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="direction_id" />
+                <field name="pilote_id" />
+                <field name="action" />
+                <field name="date_creation" />
+                <field name="date_fin_previsionelle" />
+                <field name="type_action" />
+                <field name="status" />
+                <field name="taux_avancement" />
+            </search>
         </field>
     </record>
 

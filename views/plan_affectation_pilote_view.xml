@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="ajouter_action" type="object" string="Definir l'action" class="btn btn-success" />
+                    <!-- <button name="ajouter_action" type="object" string="Definir l'action" class="btn btn-success" /> -->
                 </header>
                 <sheet>
                     <group>
@@ -17,7 +17,7 @@
                         <field name="type_constat" readonly="1" />
                         <field name="direction_pilote_id" readonly="1" options="{'no_open':True, 'no_create':True}" />
                         <field name="pilote_id" options="{'no_create': True,'no_create_edit':True,'no_open':True}"/>
-                        <field name="action_id" />
+                        <!-- <field name="action_id" readonly="1" attrs="{'invisible': [('action', '=', False)]}" /> -->
                     </group>
                 </sheet>
             </form>
@@ -29,7 +29,7 @@
         <field name="name">plan.affectation.pilote.view.tree</field>
         <field name="model">plan.affectation_pilote</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-success="pilote_id != False" decoration-warning="pilote_id == False">
                 <field name="action_id" />
                 <field name="constat_id" options="{'no_open': True}" />
                 <field name="origine_constat" />
@@ -40,6 +40,21 @@
         </field>
     </record>
 
+    <!-- define a search view -->
+    <record id="affectation_pilote_view_search" model="ir.ui.view">
+        <field name="name">plan.affectation.pilote.view.search</field>
+        <field name="model">plan.affectation_pilote</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="action_id" />
+                <field name="constat_id" />
+                <field name="origine_constat" />
+                <field name="type_constat" />
+                <field name="direction_pilote_id" />
+                <field name="pilote_id" />
+            </search>
+        </field>
+    </record>
     <!-- window action -->
     <record id="affectation_pilote_view_action" model="ir.actions.act_window">
         <field name="name">Affectation Pilote</field>

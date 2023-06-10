@@ -8,8 +8,9 @@
         <field name="arch" type="xml">
             <form>
             <header>
+                <!-- <button name="check_if_all_actions_solded" type="object" string="Verifier Actions solded"  /> -->
                 <button name="supprimer_constat" type="object" string="Supprimer ce constat" class="btn btn-danger" attrs="{'invisible': [('id','=', False)]}" />
-                <button name="annuler_constat" type="object" string="Annuler constat" class="btn btn-warning" attrs="{'invisible': [('id','=', False)]}" />
+                <!-- <button name="annuler_constat" type="object" string="Annuler constat" class="btn btn-warning" attrs="{'invisible': [('id','=', False)]}" /> -->
                 <field name="status" widget="statusbar" />
             </header>
                 <sheet>
@@ -49,6 +50,25 @@
                 <field name="genere_action" />
                 <field name="status" />
             </tree>
+        </field>
+    </record>
+
+    <!-- define a search view  -->
+    <record id="plan_constat_view_search" model="ir.ui.view">
+        <field name="name">plan.constat.view.search</field>
+        <field name="model">plan.constat</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name"/>
+                <field name="type_constat"/>
+                <field name="origine" />
+                <field name="direction_concerne_ids" />
+                <field name="direction_pilote_ids"  />
+                <field name="activite_id"  />
+                <field name="processus_id" />
+                <field name="genere_action" />
+                <field name="status" />
+            </search>
         </field>
     </record>
 

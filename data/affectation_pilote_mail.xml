@@ -3,7 +3,7 @@
 
     <data>
     
-        <record id="affectation_pilote_email" model="mail.template">
+        <record id="affectation_pilote_mail" model="mail.template">
             <field name="name">Nouveau Constat</field>
             <field name="model_id" ref="plan.model_plan_affectation_pilote" />
             <field name="subject">Nouveau Constat</field>
@@ -24,11 +24,11 @@
                                                 <div style="margin: 16px 0px 16px 0px;">
                                                     <a href="${object.get_affectation_pilote_url()}"
                                                         style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:25px;">
-                                                        voire le constat
+                                                        voir le constat
                                                     </a>
                                                 </div>
                                                <br/><br/>
-                                                Thanks,
+                                                Merci,
                                                 % if user.signature:
                                                     <br/>
                                                     ${user.signature | safe}

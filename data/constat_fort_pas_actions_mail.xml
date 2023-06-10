@@ -19,17 +19,17 @@
                                         <tr><td valign="top" style="font-size: 20px;">
                                             <div>
                                                 Bonjour,<br/><br/>
-                                                Un nouveau constat de type fort qui ne genere pas d'actions a ete affecte a votre direction, <br></br>
+                                                Un nouveau constat de type fort qui ne génère pas d'actions a été affecté à votre direction, <br></br>
                                                 Cliquez sur le bouton ci-dessus pour procéder à l'étape suivante.<br/><br/>
                                                 <br/>
                                                 <div style="margin: 16px 0px 16px 0px;">
                                                     <a href="${object.get_constat_url()}"
                                                         style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:25px;">
-                                                        voire le constat
+                                                        voir le constat
                                                     </a>
                                                 </div>
                                                <br/><br/>
-                                                Thanks,
+                                                Merci,  
                                                 % if user.signature:
                                                     <br/>
                                                     ${user.signature | safe}
