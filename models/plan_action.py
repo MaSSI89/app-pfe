@@ -1,5 +1,6 @@
 from odoo import fields, models,api,_
 from odoo.exceptions import ValidationError
+from datetime import datetime
 
 class Action(models.Model):
     _name = 'plan.action'
@@ -114,14 +115,45 @@ class Action(models.Model):
         return
 
     def write(self, values):
-        if 'status' not in values:
-            values['status'] = 'enattentevalidation'
-        record = super().write(values)
-        if record:
-            template = 'plan.action_definie_mail'
-            self.send_mail_notification(template)
-        return record
+        # if 'status' not in values:
+        #     values['status'] = 'enattentevalidation'
+        # record = super().write(values)
+        # if record:
+        #     template = 'plan.action_definie_mail'
+        #     self.send_mail_notification(template)
+        # return record
+        if 'status' in values and len(values) == 1:
+            record  = super().write(values)
+            return record
+        if 'pilote_id' in values and len(values) == 1:
+            record = super().write(values)
+            return record
         
+        # Lors de la definition d'une nouvelle action
+        if self.all_fields_are_empty() :
+            if not self.all_fields_filled():
+                raise ValidationError('Vous devez remplire tous les champs')
+            
+            date_fin_valid = self.check_if_date_fin_valide(values)
+            if not date_fin_valid :
+                raise ValidationError("La date de fin previsionelle doit etre superieure ou egale a aujord'hui")
+            
+            values['status'] = 'enattentevalidation'
+            record = super().write(values)
+            if record :
+                template = 'plan.action_definie_mail'
+                self.send_mail_notification(template)
+            return record
+        
+        # lorsque le record est deja cree et en fait des changements aucun champs ne doit devenire vide
+        if self.all_fields_filled() :
+            if not self.no_field_is_empty(values):
+                raise ValidationError('Vous devez remplire tous les champs')
+            record = super().write(values)
+            return record
+
+        
+         
     def get_action_url(self):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         # http://localhost:8069/web#id=8&action=135&model=plan.action&view_type=form&cids=1&menu_id=114
@@ -174,3 +206,29 @@ class Action(models.Model):
     def get_createur_constat(self):
         directeur_email = self.sudo().constat_id.create_uid.email
         return str(directeur_email)
+    
+    def all_fields_are_empty(self):
+        if self.action == False or self.date_fin_previsionelle == False or self.opportunite == False or self.type_risque == False or self.type_action == False :
+            return False
+        return True
+    
+    def all_fields_filled(self, values):
+        if 'action' in values and 'date_fin_previsionelle' in values and 'opportunite' in values and 'type_risque' in values and 'type_action' in values : 
+            return True
+        return False  
+
+    def no_field_is_empty(self, values):
+        for value in values.values():
+            if value is None or value == '':
+                return False
+        return True
+    
+    def check_if_date_fin_valide(self,values):
+        date_fin = datetime.strptime(values['date_fin_previsionelle'], '%Y-%m-%d').date()
+        today_date = fields.Datetime.now().date()
+        print(today_date)
+        date_of_today = datetime.strptime(str(today_date), '%Y-%m-%d').date()
+        if date_fin <= date_of_today:
+            return False
+        return True
+            

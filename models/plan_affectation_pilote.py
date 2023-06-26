@@ -26,7 +26,8 @@ class AffectationPilote(models.Model):
     def get_affectation_pilote_url(self):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         # http://localhost:8069/web#id=3&action=136&model=plan.affectation_pilote&view_type=form&cids=&menu_id=114
-        affectation_url = base_url + '/web#id=' + str(self.id) + '&action=136&model=plan.affectation_pilote&view_type=form&cids=&menu_id=114'
+        # http://localhost:8069/web#id=1
+        affectation_url = base_url + '/web#id=' + str(self.id) + '&action=127&model=plan.affectation_pilote&view_type=form&cids=&menu_id=105'
         print(affectation_url)
         return affectation_url
     
